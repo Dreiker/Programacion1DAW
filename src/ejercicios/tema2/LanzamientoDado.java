@@ -115,7 +115,7 @@ public class LanzamientoDado extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         contador++;
-        resultado.setText(String.valueOf(rand.nextInt(6)));
+        resultado.setText(String.valueOf(rand.nextInt(6) + 1));
         lanzamiento.setText(String.valueOf(contador));
     }//GEN-LAST:event_jButton1ActionPerformed
 
