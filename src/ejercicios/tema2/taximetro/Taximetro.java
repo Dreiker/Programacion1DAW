@@ -267,7 +267,7 @@ public class Taximetro extends javax.swing.JFrame {
         
        if(campoDestino.getText().equals("")){
            System.out.println("Debe introducir un destino.");
-           Error jframe = new Error("");
+           Error jframe = new Error();
            jframe.setVisible(true);
        } else {
             botonInicio.setEnabled(false);

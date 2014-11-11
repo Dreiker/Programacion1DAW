@@ -14,7 +14,7 @@ public class Error extends javax.swing.JFrame {
     /**
      * Creates new form NewJFrame
      */
-    public Error(String string) {
+    public Error() {
         initComponents();
         
         
