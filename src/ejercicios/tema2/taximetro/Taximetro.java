@@ -1,38 +1,37 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Proyecto taximetro
+ * @author Juan Manuel Lozano Panadero
+ * ****************************
+ * 
+ * Aplicación que toma unas coordenadas de GPS y un destino para proporcionar
+ * la ruta deseada además del tiempo, importe del trayecto y otros datos de
+ * utilidad para el oficio de traslado de pasajeros.
  */
+
 package ejercicios.tema2.taximetro;
 
 import es.javiergarbedo.coordinateslib.CoordinatesConverter;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.util.Calendar;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.validator.CreditCardValidator;
 
-/**
- *
- * @author Juan Manuel
- */
 public class Taximetro extends javax.swing.JFrame {
-    
+
     final float TARIFA_INICIO = 1.50f;
     final float TARIFA_MINUTO = 0.76f;
     final int PORCENTAJE_IVA = 21;
     int numTicket = 0;
     Calendar calendarInicio;
-    /**
-     * Creates new form Taximetro
-     */
+
     public Taximetro() {
-        
+
+        //Inicialización de la aplicación.
         initComponents();
-        jTextArea1.setText("Introduzca un destino.");
+        ticket.setText("Introduzca un destino.");
         botonFin.setEnabled(false);
     }
 
@@ -57,7 +56,7 @@ public class Taximetro extends javax.swing.JFrame {
         campoDestino = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        ticket = new javax.swing.JTextArea();
         jLabel8 = new javax.swing.JLabel();
         campoTarjetaCredito = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
@@ -166,10 +165,10 @@ public class Taximetro extends javax.swing.JFrame {
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        ticket.setEditable(false);
+        ticket.setColumns(20);
+        ticket.setRows(5);
+        jScrollPane1.setViewportView(ticket);
 
         jLabel8.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         jLabel8.setText("Tarjeta de crédito:");
@@ -260,8 +259,7 @@ public class Taximetro extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(campoTarjetaCredito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton1)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(botonInicio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -275,79 +273,105 @@ public class Taximetro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonInicioActionPerformed
-        
-       if(campoDestino.getText().equals("")){
-           System.out.println("Debe introducir un destino.");
-           JOptionPane.showMessageDialog(this, "Debe introducir un destino.", "titulo", JOptionPane.ERROR_MESSAGE);
-       } else {
+
+         /*****************************
+         * Boton de inicio
+         *******************************************/
+
+        /**
+         * Comprobamos si el campo de texto está vacio, en caso afirmativo
+         * avisamos de ello con una ventana emegente, de lo contrario se
+         * ejecutaría el código
+         */
+        if (campoDestino.getText().equals("")) {
+            System.out.println("Debe introducir un destino.");
+            JOptionPane.showMessageDialog(this, "Debe introducir un destino.",
+                                          "titulo", JOptionPane.ERROR_MESSAGE);
+        } else {
             botonInicio.setEnabled(false);
             botonFin.setEnabled(true);
-            jTextArea1.setText("");
+            ticket.setText("");
             numTicket++;
             calendarInicio = Calendar.getInstance();
-            
+
             String origen = campoLatitud.getText() + "," + campoLongitud.getText();
             String destino = campoDestino.getText();
             destino = destino.replaceAll(" ", "%20");
             javax.swing.JLabel jLabelMapa = mapa;
             int tamHorizontal = 200;
             int tamVertical = 200;
-            
-            campoConvertidoLatitud.setText(CoordinatesConverter.decimalToDMS(Double.valueOf(campoLatitud.getText())));
-            campoConvertidoLongitud.setText(CoordinatesConverter.decimalToDMS(Double.valueOf(campoLongitud.getText())));
-            
-            
+
+            campoConvertidoLatitud.setText(CoordinatesConverter.decimalToDMS
+                                          (Double.valueOf(campoLatitud.getText())));
+            campoConvertidoLongitud.setText(CoordinatesConverter.decimalToDMS
+                                           (Double.valueOf(campoLongitud.getText())));
 
             try {
-                String txtDireccionImagenMapa = "http://maps.google.com/maps/api/staticmap?path="+
-                    origen+"|"+destino+"&size="+tamHorizontal+"x"+tamVertical+
-                    "&language=ES&sensor=false";
+                String txtDireccionImagenMapa = "http://maps.google.com/maps/api/staticmap?path="
+                        + origen + "|" + destino + "&size=" + tamHorizontal + "x" + tamVertical
+                        + "&language=ES&sensor=false";
                 System.out.println(txtDireccionImagenMapa);
                 java.awt.Toolkit toolkit = java.awt.Toolkit.getDefaultToolkit();
-                java.awt.Image imagenMapa = toolkit.getImage(new java.net.URL(txtDireccionImagenMapa)); 
-                jLabelMapa.setIcon(new javax.swing.ImageIcon(imagenMapa));    
-            } catch(java.net.MalformedURLException e) {   
+                java.awt.Image imagenMapa = toolkit.getImage(new java.net.URL(txtDireccionImagenMapa));
+                jLabelMapa.setIcon(new javax.swing.ImageIcon(imagenMapa));
+            } catch (java.net.MalformedURLException e) {
                 javax.swing.JOptionPane.showMessageDialog(this, "La dirección de imagen indicada no es correcta");
             }
-       }
-        
+        }
+
     }//GEN-LAST:event_botonInicioActionPerformed
 
     private void botonFinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonFinActionPerformed
+
+
+        /**************************
+        *   Boton de parada
+        *******************************************/
+
+        /**
+         * El botón de parada se encargará de imprimir el número de ticket, la
+         * fecha, duración de trayecto e importes.
+         */
         
+        // Desactivamos el boton de inicio y activamos el de parada. 
         botonInicio.setEnabled(true);
         botonFin.setEnabled(false);
-        
-        jTextArea1.append("TICKET \n");
-        jTextArea1.append("============== \n");
-        
+
+        ticket.append("TICKET \n");
+        ticket.append("============== \n");
+
         // Mostrar numero del ticket.
         NumberFormat formato = NumberFormat.getNumberInstance();
         formato.setMinimumIntegerDigits(5);
         formato.setGroupingUsed(false);
-        jTextArea1.append("Nº ticket: " + formato.format(numTicket) + "\n");
-        
-        //Mostrar datos.
+        ticket.append("Nº ticket: " + formato.format(numTicket) + "\n");
+
+        /**
+         * Obtenemos la fecha, calculamos la duración y añadimos al campo del
+         * ticket todos los datos.
+         */
         Calendar calendarFin = Calendar.getInstance();
         DateFormat formatoFecha = DateFormat.getDateInstance(DateFormat.MEDIUM);
-        jTextArea1.append("Fecha: " + formatoFecha.format(calendarInicio.getTime()) + "\n");  
-        jTextArea1.append("Hora bajada bandera: " + DateFormatUtils.format(calendarInicio, "HH:mm:ss") + "\n" );
-        jTextArea1.append("Hora fin trayecto: " + DateFormatUtils.format(calendarFin, "HH:mm:ss") + "\n");
-        jTextArea1.append("Duración trayecto: " + DurationFormatUtils.formatPeriod(calendarInicio.getTimeInMillis(),
-                           calendarFin.getTimeInMillis(), "HH:mm:ss") + "\n");
-        jTextArea1.append("Tarifa por minuto: " + TARIFA_MINUTO + "\n \n");
-        
-        //Mostrar importe.  
-        float importe = Float.valueOf(DurationFormatUtils.formatPeriod(calendarInicio.getTimeInMillis(),
-                        calendarFin.getTimeInMillis(), "mm")) * TARIFA_MINUTO + TARIFA_INICIO;
-        jTextArea1.append("Importe: " + importe + "\n");
-        
+        ticket.append("Fecha: " + formatoFecha.format(calendarInicio.getTime()) + "\n"
+        + "Hora bajada bandera: " + DateFormatUtils.format(calendarInicio, "HH:mm:ss") + "\n"
+        + "Hora fin trayecto: " + DateFormatUtils.format(calendarFin, "HH:mm:ss") + "\n"
+        + "Duración trayecto: " + DurationFormatUtils.formatPeriod(calendarInicio.getTimeInMillis(),
+                calendarFin.getTimeInMillis(), "HH:mm:ss") + "\n"
+        + "Tarifa por minuto: " + TARIFA_MINUTO + "\n \n");
+
+        // Calculamos el importe y lo añadimos al campo del ticket.
+        float importe = Float.valueOf(DurationFormatUtils.formatPeriod
+                                     (calendarInicio.getTimeInMillis(),
+                                      calendarFin.getTimeInMillis(),"mm"))
+                                      * TARIFA_MINUTO + TARIFA_INICIO;
+        ticket.append("Importe: " + importe + "\n");
+
         float iva = importe * PORCENTAJE_IVA / 100;
         formato.setMinimumIntegerDigits(1);
         formato.setMaximumFractionDigits(2);
-        
-        jTextArea1.append("IVA: " + formato.format(iva) + "\n");
-        jTextArea1.append("Importe total: " + formato.format(importe + iva));
+
+        ticket.append("IVA: " + formato.format(iva) + "\n");
+        ticket.append("Importe total: " + formato.format(importe + iva));
     }//GEN-LAST:event_botonFinActionPerformed
 
     private void campoLatitudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoLatitudActionPerformed
@@ -360,22 +384,20 @@ public class Taximetro extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         CreditCardValidator validadorTarjeta = new CreditCardValidator();
-        
-        if(campoTarjetaCredito.getText().equals("")){
-           JOptionPane.showMessageDialog(this, "Debe introducir un valor en el campo.",
-           "Error", JOptionPane.ERROR_MESSAGE);
+
+        if (campoTarjetaCredito.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Debe introducir un valor en el campo.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            if (validadorTarjeta.isValid(campoTarjetaCredito.getText())) {
+                JOptionPane.showMessageDialog(this, "Tarjeta de crédito aceptada.",
+                        "Aceptada", JOptionPane.OK_OPTION);
+            } else {
+                JOptionPane.showMessageDialog(this, "Tarjeta de crédito rechazada.",
+                        "Rechazada", JOptionPane.OK_OPTION);
+            }
         }
-        else {
-           if(validadorTarjeta.isValid(campoTarjetaCredito.getText())){
-           JOptionPane.showMessageDialog(this, "Tarjeta de crédito aceptada.",
-           "Aceptada", JOptionPane.OK_OPTION);
-           }
-           else {
-               JOptionPane.showMessageDialog(this, "Tarjeta de crédito rechazada.",
-               "Rechazada", JOptionPane.OK_OPTION);
-           }
-        }
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -432,7 +454,7 @@ public class Taximetro extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel mapa;
+    private javax.swing.JTextArea ticket;
     // End of variables declaration//GEN-END:variables
 }
