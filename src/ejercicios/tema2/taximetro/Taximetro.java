@@ -20,10 +20,14 @@ import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.validator.CreditCardValidator;
 
 public class Taximetro extends javax.swing.JFrame {
-
+    
+    /** Cuantia que se aplica al importe al iniciar el recorrido */
     final float TARIFA_INICIO = 1.50f;
+    /** Cuantia que se aplica al importe por cada minuto de recorrido */
     final float TARIFA_MINUTO = 0.76f;
+    /** Porcentaje de IVA que se aplica a la cuantía */
     final int PORCENTAJE_IVA = 21;
+    /** Contador para el número de ticket expedido. */
     int numTicket = 0;
     Calendar calendarInicio;
 
