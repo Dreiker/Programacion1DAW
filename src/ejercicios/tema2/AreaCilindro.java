@@ -147,7 +147,6 @@ public class AreaCilindro extends javax.swing.JFrame {
         
         double resultado = 2 * Math.PI * radio * altura;
         
-        //2 * Math.PI * varDiametro.getText() / 2 * varAltura
         
         jTextField3.setText(String.valueOf(resultado));
     }//GEN-LAST:event_jButton2ActionPerformed
